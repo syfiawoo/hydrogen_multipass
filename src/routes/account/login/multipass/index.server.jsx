@@ -12,9 +12,6 @@ const CUSTOMER_INFO_QUERY = gql`
     }
   }
 `;
-
-// Adding a comment to trigger a deploy.
-
 /*
   Generates a multipass token for a given customer and return_to url.
   Handles POST `/account/login/multipass` requests.
@@ -43,7 +40,7 @@ export async function api(request, {session, queryShop}) {
     const body = await request.json();
 
     customer = body.customer;
-
+    console.log(customer)
     if (!session) {
       return NotLoggedInResponse({
         url: body?.return_to ?? null,
@@ -114,6 +111,7 @@ export async function api(request, {session, queryShop}) {
         Oxygen.env.SHOPIFY_STORE_DOMAIN,
         request,
       );
+      console.log(data.url)
       if (!data?.url) {
         return NotLoggedInResponse({
           url: body?.return_to ?? null,
