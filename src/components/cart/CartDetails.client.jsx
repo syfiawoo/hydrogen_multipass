@@ -7,7 +7,7 @@ import {
   CartShopPayButton,
   Money,
 } from '@shopify/hydrogen';
-
+import {CheckoutButtonMultipass} from './CheckoutButtonMultipass.client';
 import {Button, Text, CartLineItem, CartEmpty} from '~/components';
 
 export function CartDetails({layout, onClose}) {
@@ -64,6 +64,10 @@ export function CartDetails({layout, onClose}) {
 
 function CartCheckoutActions() {
   const {checkoutUrl} = useCart();
+  // const {url, error} = await multipass({
+  //   return_to: checkoutUrl,
+  //   redirect: true,
+  // });
   return (
     <>
       <div className="grid gap-4">
@@ -74,6 +78,7 @@ function CartCheckoutActions() {
             </Button>
           </Link>
         ) : null}
+        <CheckoutButtonMultipass />
         <CartShopPayButton />
       </div>
     </>

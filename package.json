@@ -36,12 +36,14 @@
   "prettier": "@shopify/prettier-config",
   "dependencies": {
     "@headlessui/react": "^1.7.0",
-    "@shopify/hydrogen": "^1.5.0",
+    "@shopify/hydrogen": "^1.6.0",
     "clsx": "^1.1.1",
+    "crypto-js": "^4.1.1",
     "graphql-tag": "^2.12.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.4.0",
+    "snakecase-keys": "^5.4.4",
     "typographic-base": "^1.0.4"
   }
 }

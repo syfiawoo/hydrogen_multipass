@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {useNavigate, Link} from '@shopify/hydrogen/client';
 import {getInputStyleClasses} from '../../lib/styleUtils';
+import {multipass} from '../../lib/multipass';
 
 export function AccountLoginForm({shopName}) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function AccountLoginForm({shopName}) {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(null);
 
-  function onSubmit(event) {
+  async function onSubmit(event) {
     event.preventDefault();
 
     setEmailError(null);
@@ -21,9 +22,20 @@ export function AccountLoginForm({shopName}) {
 
     if (showEmailField) {
       checkEmail(event);
-    } else {
-      checkPassword(event);
+      const customer = {
+        email,
+        acceptsMarketing: true,
+        return_to: `/account`,
+        // ...any customer field works including firstName, tags, addresses etc
+      };
+      const {url, error} = await multipass({customer});
+      if (url) {
+        window.location.href = url;
+      }
     }
+    // else {
+    //   checkPassword(event);
+    // }
   }
 
   function checkEmail(event) {

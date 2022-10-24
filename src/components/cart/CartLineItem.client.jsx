@@ -13,7 +13,6 @@ import {Heading, IconRemove, Text} from '~/components';
 export function CartLineItem() {
   const {linesRemove} = useCart();
   const {id: lineId, quantity, merchandise} = useCartLine();
-
   return (
     <li key={lineId} className="flex gap-4">
       <div className="flex-shrink">
