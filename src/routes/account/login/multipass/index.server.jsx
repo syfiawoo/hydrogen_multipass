@@ -13,6 +13,8 @@ const CUSTOMER_INFO_QUERY = gql`
   }
 `;
 
+// Adding a comment to trigger a deploy.
+
 /*
   Generates a multipass token for a given customer and return_to url.
   Handles POST `/account/login/multipass` requests.
