@@ -15,7 +15,7 @@ export async function multipass(options) {
     // If we pass `return_to` we try to get the customer
     // from the session. If not, it will throw.
     const body = customer ? {customer} : {return_to};
-    console.log(...body)
+    console.log("body", body)
     // Get the ip address of the client to pass to the multipass as remote_ip
     const ipfy = await fetch('https://api.ipify.org?format=json');
     const {ip} = await ipfy.json();
