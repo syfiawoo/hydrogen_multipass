@@ -26,7 +26,7 @@ export async function multipass(options) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({...body, client_ip: ip}),
+      body: JSON.stringify({...body}),
     });
 
     if (!response.ok) {
