@@ -48,7 +48,7 @@ export class Multipassify {
 
     // checkout is offsite, we use the shopify domain for auth
     const redirectToCheckout = customer.return_to
-      ? customer.return_to.includes('checkout')
+      ? customer.return_to.includes('cart')
       : false;
 
     return {

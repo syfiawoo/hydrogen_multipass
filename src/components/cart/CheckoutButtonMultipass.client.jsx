@@ -10,18 +10,17 @@ import {Button} from '~/components/elements';
 export function CheckoutButtonMultipass() {
   const {checkoutUrl} = useCart();
 
-  async function checkoutHandler() {
+  async function checkoutHandler(e) {
+    e.preventDefault();
     if (!checkoutUrl) return;
 
     // checkout via multipass.
     // If they user is logged in we persist it in the checkout,
     // otherwise we log them out of the checkout too.
-    const {url, error} = await multipass({
+    await multipass({
       return_to: checkoutUrl,
       redirect: true,
     });
-
-    console.log('Checkout err:', error);
   }
 
   return (

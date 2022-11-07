@@ -109,7 +109,7 @@ export async function api(request, {session, queryShop}) {
       const data = multipassify.generate(
         customerInfo,
         // @ts-ignore
-        Oxygen.env.SHOPIFY_STORE_DOMAIN,
+        Oxygen.env.PUBLIC_STORE_DOMAIN,
         request,
       );
       if (!data?.url) {
@@ -257,6 +257,6 @@ function getCorsHeaders(origin) {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': `${allowedOrigin}`,
     'Access-Control-Allow-Headers':
-      '*',
+      'Origin, X-Requested-With, Content-Type, Accept',
   };
 }
