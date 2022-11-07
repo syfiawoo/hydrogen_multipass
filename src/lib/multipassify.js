@@ -10,6 +10,7 @@ import snake_cake from 'snakecase-keys';
 */
 export class Multipassify {
   constructor(secret) {
+    console.log("multipass secret", secret)
     if (!(typeof secret == 'string' && secret.length > 0)) {
       throw new Error('Invalid Secret');
     }
@@ -33,6 +34,7 @@ export class Multipassify {
   // Generates an auth `token` and `url` for a customer based
   // on the `return_to` url property found in the customer object
   generate(customer, shopifyDomain, request) {
+    console.log("multipass store", shopifyDomain)
     if (!shopifyDomain) {
       throw new Error('domain is required');
     }
