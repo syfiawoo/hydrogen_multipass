@@ -15,11 +15,9 @@ export async function multipass(options) {
     // If we pass `return_to` we try to get the customer
     // from the session. If not, it will throw.
     const body = customer ? {customer} : {return_to};
-    console.log("body", body)
     // Get the ip address of the client to pass to the multipass as remote_ip
-    const ipfy = await fetch('https://api.ipify.org?format=json');
-    const {ip} = await ipfy.json();
-    console.log(ip)
+    // const ipfy = await fetch('https://api.ipify.org?format=json');
+    // const {ip} = await ipfy.json();
     // Generate multipass token POST `/account/login/multipass`
     const response = await fetch('/account/login/multipass', {
       method: 'POST',
@@ -56,7 +54,7 @@ export async function multipass(options) {
     return data;
   } catch (error) {
     //@ts-ignore
-    console.log('⚠️ bypassing multipass checkout', error.message);
+    console.log('⚠️ bypassing multipass checkout', error);
 
     const message = error instanceof Error ? error.message : 'Unknown error';
     if (!redirect) {

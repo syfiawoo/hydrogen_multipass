@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {useNavigate, Link} from '@shopify/hydrogen/client';
 import {getInputStyleClasses} from '../../lib/styleUtils';
-import {multipass} from '../../lib/multipass';
 
 export function AccountLoginForm({shopName}) {
   const navigate = useNavigate();
@@ -22,20 +21,9 @@ export function AccountLoginForm({shopName}) {
 
     if (showEmailField) {
       checkEmail(event);
-      const customer = {
-        email,
-        acceptsMarketing: true,
-        return_to: `/account`,
-        // ...any customer field works including firstName, tags, addresses etc
-      };
-      const {url, error} = await multipass({customer});
-      if (url) {
-        window.location.href = url;
-      }
+    } else {
+      checkPassword(event);
     }
-    // else {
-    //   checkPassword(event);
-    // }
   }
 
   function checkEmail(event) {
@@ -58,7 +46,8 @@ export function AccountLoginForm({shopName}) {
         setHasSubmitError(true);
         resetForm();
       } else {
-        navigate('/account');
+        window.location.href = response.url;
+        // navigate(response.url);
       }
     } else {
       setPasswordError(
@@ -125,7 +114,7 @@ export async function callLoginApi({email, password}) {
       body: JSON.stringify({email, password}),
     });
     if (res.ok) {
-      return {};
+      return res.json();
     } else {
       return res.json();
     }
@@ -221,7 +210,7 @@ function PasswordField({password, setPassword, passwordError}) {
           placeholder="Password"
           aria-label="Password"
           value={password}
-          minLength={8}
+          minLength={6}
           required
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
