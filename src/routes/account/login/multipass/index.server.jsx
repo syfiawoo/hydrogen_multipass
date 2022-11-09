@@ -104,7 +104,6 @@ export async function api(request, {session, queryShop}) {
         remote_ip: body.client_ip,
       };
 
-      // console.log(body)
       // Generating a token for customer
       const data = multipassify.generate(
         customerInfo,
@@ -119,24 +118,12 @@ export async function api(request, {session, queryShop}) {
         });
       }
 
-      const test = JSON.stringify({data: {...data, error: null}});
       // success, return token, url
       return new Response(JSON.stringify({data: {...data, error: null}}), {
         status: 200,
         headers: getCorsHeaders(origin),
       });
-      // return new Response(
-      //   JSON.stringify({
-      //     data: null,
-      //     error: 'Method not allowed.',
-      //   }),
-      //   {
-      //     status: 300,
-      //     headers: {'Content-Type': 'application/json', Allow: 'POST, OPTIONS', 'Access-Control-Allow-Origin': '*'},
-      //   },
-      // );
     } catch (error) {
-      console.log('errr', error);
       let message = 'unknown error';
       if (error instanceof Error) {
         message = error.message;
@@ -150,7 +137,6 @@ export async function api(request, {session, queryShop}) {
       });
     }
   } catch (error) {
-    console.log('errr111', error);
     let message = 'unknown error';
     if (error instanceof Error) {
       message = error.message;
@@ -230,7 +216,6 @@ function NotLoggedInResponse(options) {
   };
 
   const {url, error: errorKey} = options;
-  console.log({url, errorKey});
 
   let error;
   if (!errorKey) {
