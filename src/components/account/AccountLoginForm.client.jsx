@@ -1,10 +1,8 @@
 import {useState} from 'react';
-import {useNavigate, Link} from '@shopify/hydrogen/client';
+import {Link} from '@shopify/hydrogen/client';
 import {getInputStyleClasses} from '../../lib/styleUtils';
 
 export function AccountLoginForm({shopName}) {
-  const navigate = useNavigate();
-
   const [hasSubmitError, setHasSubmitError] = useState(false);
   const [showEmailField, setShowEmailField] = useState(true);
   const [email, setEmail] = useState('');
@@ -47,7 +45,6 @@ export function AccountLoginForm({shopName}) {
         resetForm();
       } else {
         window.location.href = response.url;
-        // navigate(response.url);
       }
     } else {
       setPasswordError(

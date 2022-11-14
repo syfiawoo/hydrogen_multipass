@@ -64,10 +64,6 @@ export function CartDetails({layout, onClose}) {
 
 function CartCheckoutActions() {
   const {checkoutUrl} = useCart();
-  // const {url, error} = await multipass({
-  //   return_to: checkoutUrl,
-  //   redirect: true,
-  // });
   return (
     <>
       <div className="grid gap-4">

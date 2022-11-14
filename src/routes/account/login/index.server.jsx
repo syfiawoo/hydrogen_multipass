@@ -36,7 +36,7 @@ const SHOP_QUERY = gql`
   }
 `;
 
-export async function api(request, {session, queryShop}) {
+export async function api(request, {session}) {
   if (!session) {
     return new Response('Session storage not available.', {status: 400});
   }
@@ -78,109 +78,26 @@ export async function api(request, {session, queryShop}) {
       };
 
       // Generating a token for customer
-      const gen = multipassify.generate(
+      const data = multipassify.generate(
         customerInfo,
         // @ts-ignore
         Oxygen.env.PUBLIC_STORE_DOMAIN,
         request,
       );
-      if (gen.url) {
-        return new Response(JSON.stringify(gen), {
+      if (data.url) {
+        return new Response(JSON.stringify(data), {
           status: 200,
         });
+      } else {
+        throw new Error('Missing multipass url');
       }
-      // const {token, error} = await multipass({customer});
-      // if (error) {
-      //   console.log('tok err', error);
-      //   return new Response(JSON.stringify({error: 'Sometthing is wrong'}), {
-      //     status: 400,
-      //   });
-      // }
-      // const response = await fetch('/account/login/multipass', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({...body}),
-      // });
-
-      // console.log('tok', token);
-      // // console.log("errhere", error)
-      // const {data, errors} = await queryShop({
-      //   query: LOGIN_MULTIPASS_MUTATION,
-      //   variables: {
-      //     multipassToken: gen.token,
-      //     // input: {
-      //     //   email: jsonBody.email,
-      //     //   password: jsonBody.password,
-      //     // },
-      //   },
-      //   // @ts-expect-error `queryShop.cache` is not yet supported but soon will be.
-      //   cache: CacheNone(),
-      // });
-      // if (
-      //   data?.customerAccessTokenCreateWithMultipass?.customerAccessToken
-      //     ?.accessToken
-      // ) {
-      //   await session.set(
-      //     'customerAccessToken',
-      //     data.customerAccessTokenCreateWithMultipass.customerAccessToken
-      //       .accessToken,
-      //   );
-
-      //   return new Response(JSON.stringify(gen), {
-      //     status: 200,
-      //   });
-      // } else {
-      //   console.log('api resp', data);
-      //   return new Response(
-      //     JSON.stringify({
-      //       error:
-      //         data?.customerAccessTokenCreateWithMultipass
-      //           ?.customerUserErrors ?? errors,
-      //     }),
-      //     {status: 401},
-      //   );
-      // }
     } else {
       return new Response(
         JSON.stringify({error: 'Incorrect email or password.'}),
         {status: 400},
       );
     }
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error.message);
   }
 }
-
-// const LOGIN_MUTATION = gql`
-//   mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
-//     customerAccessTokenCreate(input: $input) {
-//       customerUserErrors {
-//         code
-//         field
-//         message
-//       }
-//       customerAccessToken {
-//         accessToken
-//         expiresAt
-//       }
-//     }
-//   }
-// `;
-
-// const LOGIN_MULTIPASS_MUTATION = gql`
-//   mutation customerAccessTokenCreateWithMultipass($multipassToken: String!) {
-//     customerAccessTokenCreateWithMultipass(multipassToken: $multipassToken) {
-//       customerUserErrors {
-//         code
-//         field
-//         message
-//       }
-//       customerAccessToken {
-//         accessToken
-//         expiresAt
-//       }
-//     }
-//   }
-// `;
