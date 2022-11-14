@@ -1,9 +1,8 @@
 import {Suspense} from 'react';
-import {CacheNone, Seo, gql} from '@shopify/hydrogen';
+import {CacheNone, Seo} from '@shopify/hydrogen';
 
 import {AccountCreateForm} from '~/components';
 import {Layout} from '~/components/index.server';
-import {getApiErrorMessage} from '~/lib/utils';
 
 export default function Register({response}) {
   response.cache(CacheNone());
@@ -18,7 +17,7 @@ export default function Register({response}) {
   );
 }
 
-export async function api(request, {queryShop}) {
+export async function api(request) {
   const jsonBody = await request.json();
 
   if (!jsonBody.email || !jsonBody.password) {
@@ -28,53 +27,76 @@ export async function api(request, {queryShop}) {
     );
   }
 
-  const {data, errors} = await queryShop({
-    query: CUSTOMER_CREATE_MUTATION,
-    variables: {
-      input: {
-        email: jsonBody.email,
-        password: jsonBody.password,
-        firstName: jsonBody.firstName,
-        lastName: jsonBody.lastName,
-      },
+  const resp = await fetch(`https://c66a9a4f16c1.ngrok.io/register`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    // @ts-expect-error `queryShop.cache` is not yet supported but soon will be.
-    cache: CacheNone(),
+    body: JSON.stringify(jsonBody),
   });
 
-  const errorMessage = getApiErrorMessage('customerCreate', data, errors);
-
-  if (
-    !errorMessage &&
-    data &&
-    data.customerCreate &&
-    data.customerCreate.customer &&
-    data.customerCreate.customer.id
-  ) {
+  const {detail} = await resp.json();
+  if (resp.ok) {
     return new Response(null, {
       status: 200,
     });
   } else {
     return new Response(
       JSON.stringify({
-        error: errorMessage ?? 'Unknown error',
+        error: detail ?? 'Unknown error',
       }),
       {status: 401},
     );
   }
+
+  // const {data, errors} = await queryShop({
+  //   query: CUSTOMER_CREATE_MUTATION,
+  //   variables: {
+  //     input: {
+  //       email: jsonBody.email,
+  //       password: jsonBody.password,
+  //       firstName: jsonBody.firstName,
+  //       lastName: jsonBody.lastName,
+  //     },
+  //   },
+  //   // @ts-expect-error `queryShop.cache` is not yet supported but soon will be.
+  //   cache: CacheNone(),
+  // });
+
+  // const errorMessage = getApiErrorMessage('customerCreate', data, errors);
+
+  // if (
+  //   !errorMessage &&
+  //   data &&
+  //   data.customerCreate &&
+  //   data.customerCreate.customer &&
+  //   data.customerCreate.customer.id
+  // ) {
+  //   return new Response(null, {
+  //     status: 200,
+  //   });
+  // } else {
+  //   return new Response(
+  //     JSON.stringify({
+  //       error: errorMessage ?? 'Unknown error',
+  //     }),
+  //     {status: 401},
+  //   );
+  // }
 }
 
-const CUSTOMER_CREATE_MUTATION = gql`
-  mutation customerCreate($input: CustomerCreateInput!) {
-    customerCreate(input: $input) {
-      customer {
-        id
-      }
-      customerUserErrors {
-        code
-        field
-        message
-      }
-    }
-  }
-`;
+// const CUSTOMER_CREATE_MUTATION = gql`
+//   mutation customerCreate($input: CustomerCreateInput!) {
+//     customerCreate(input: $input) {
+//       customer {
+//         id
+//       }
+//       customerUserErrors {
+//         code
+//         field
+//         message
+//       }
+//     }
+//   }
+// `;
