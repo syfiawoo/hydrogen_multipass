@@ -98,7 +98,7 @@ export function AccountCreateForm() {
               placeholder="Password"
               aria-label="Password"
               value={password}
-              minLength={8}
+              minLength={6}
               required
               onChange={(event) => {
                 setPassword(event.target.value);
