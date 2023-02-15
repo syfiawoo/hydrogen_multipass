@@ -27,14 +27,17 @@ export async function api(request) {
     );
   }
 
-  const resp = await fetch(`https://c66a9a4f16c1.ngrok.io/register`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+  const resp = await fetch(
+    `https://0f5656f8-6895-49c1-be6e-fb311e1efd3a.tunnel.up.dev/register`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jsonBody),
     },
-    body: JSON.stringify(jsonBody),
-  });
+  );
 
   const {detail} = await resp.json();
   if (resp.ok) {
