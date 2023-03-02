@@ -52,7 +52,7 @@ export async function api(request, {session}) {
 
   try {
     const resp = await fetch(
-      `https://0f5656f8-6895-49c1-be6e-fb311e1efd3a.tunnel.up.dev/verify_user`,
+      `https://582cc094-6b79-4db1-89bb-aa15049ea2fa.tunnel.up.dev/verify_user`,
       {
         method: 'POST',
         headers: {
