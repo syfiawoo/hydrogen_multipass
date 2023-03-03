@@ -28,7 +28,7 @@ export async function api(request) {
   }
 
   const resp = await fetch(
-    `https://582cc094-6b79-4db1-89bb-aa15049ea2fa.tunnel.up.dev/register`,
+    `https://26074f78-983b-4041-a383-45fa905de1cb.tunnel.up.dev/register`,
     {
       method: 'POST',
       headers: {
